@@ -1,0 +1,27 @@
+{
+    "chartType": {
+        "input": "select",
+        "label": "Chart type",
+        "values": [
+            "LineChart", "BubbleChart", "Map"
+        ],
+        "optionsForValue": {
+            "LineChart": {
+                "curveType": {
+                    "input": "select",
+                    "label": "Curve type",
+                    "values": [
+                        "none",
+                        "function"
+                    ]
+                },
+                "lineWidth": {
+					"label": "Line width",
+                    "input": "number",
+                    "min": 0,
+                    "default": 2
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,5 @@
+/node_modules
+/js
+/web/js/bundle.js
+/web/js/bundle.js.map
+/web/visualizers/googlecharts/script.js

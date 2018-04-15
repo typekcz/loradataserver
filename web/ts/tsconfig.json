@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "lib": ["es5", "es6", "dom", "dom.iterable"],
+		"outFile": "../js/bundle.js",
+		"sourceMap": true,
+		"types": [
+		  "google.visualization",
+		  "googlemaps"
+		]
+    },
+    "paths": {
+      "*": []
+    },
+    "compileOnSave": true,
+    "include": [
+      "./**/*",
+      "../../commonDefinitions/*"
+    ]
+}

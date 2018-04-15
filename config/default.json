@@ -1,0 +1,25 @@
+{
+	"webserver": {
+		"http": {
+			"port": 80
+		},
+		"https": {
+			"port": 0,
+			"key": "key.pem",
+  			"cert": "cert.pem"
+		}
+	},
+	"connections": {
+		"mqtt": {
+			"url": "mqtt://localhost",
+			"options": {
+				"username": "root",
+				"password": ""
+			}
+		},
+		"rest": {
+            "url": "https://localhost:8080/api"
+		},
+		"database": "postgresql://localhost:5432/lora_data_app"
+	}
+}

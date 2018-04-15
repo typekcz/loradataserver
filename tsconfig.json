@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["es7"],
+	"module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "js",
+	"types": [
+	  "node", "config", "mqtt", "pg"
+	]
+  },
+  "paths": {
+    "*": [
+      "node_modules/*",
+      "ts/types/*"
+    ]
+  },
+  "compileOnSave": true,
+  "include": [
+    "ts/**/*",
+    "commonDefinitions/*"
+  ],
+  "exclude": [
+    "node_modules",
+	"js",
+    "web"
+  ]
+}
