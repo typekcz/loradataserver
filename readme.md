@@ -9,45 +9,45 @@ Stores and visualizes data received from device in LoRaWAN network. Uses compone
 ## Quick install (Debian)
  1. [Quick install of LoRa Server project](https://www.loraserver.io/install/quick-install/)
  2. [Installation of Node.js from repository](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions)
- 3. Download latest release.
+ 3. Clone this repository.
  4. Create role and database in PostgreSQL:
-    ```
-    sudo -u postgres psql
-    CREATE ROLE loradataserver WITH LOGIN CREATEROLE PASSWORD 'password';
-    CREATE DATABASE loradataserver WITH OWNER loradataserver;
-    ```
+	```
+	sudo -u postgres psql
+	CREATE ROLE loradataserver WITH LOGIN CREATEROLE PASSWORD 'password';
+	CREATE DATABASE loradataserver WITH OWNER loradataserver;
+	```
 
  5. Create MQTT account:
-    ```
-    sudo mosquitto_passwd /etc/mosquitto/pwd loradataserver
-    ```
+	```
+	sudo mosquitto_passwd /etc/mosquitto/pwd loradataserver
+	```
 
  6. Create configration file for your deployment (config/local.json):
-    ```
-    {
-        "connections": {
-    		"mqtt": {
-    			"options": {
-    				"username": "loradataserver",
-    				"password": "password"
-    			}
-    		},
-    		"database": "postgresql://loradataserver:password@localhost:5432/loradataserver"
-    	}
-    }
-    ```
+	```
+	{
+		"connections": {
+			"mqtt": {
+				"options": {
+					"username": "loradataserver",
+					"password": "password"
+				}
+			},
+			"database": "postgresql://loradataserver:password@localhost:5432/loradataserver"
+		}
+	}
+	```
 
  7. Install dependencies.
-    ```
-    npm install
-    ```
+	```
+	npm install
+	```
 
  8. Build project.
-    ```
-    npm run build
-    ```
+	```
+	npm run build
+	```
 
  9. Start the server. (root required for listening on ports below 1024)
-    ```
-    sudo node index.js
-    ```
+	```
+	sudo node index.js
+	```

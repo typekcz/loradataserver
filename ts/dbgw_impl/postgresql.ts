@@ -1,3 +1,7 @@
+/* MIT License
+ * Copyright (c) 2018 Lukáš Kotržena
+ */
+
 import {IDatabaseGW, TableName, Column, QueryResult, QueryParams, QueryCondition, QueryConditions, DB} from "../db";
 import * as URL from "url";
 import * as PG from "pg-promise";

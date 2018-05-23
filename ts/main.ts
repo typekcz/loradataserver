@@ -1,3 +1,7 @@
+/* MIT License
+ * Copyright (c) 2018 Lukáš Kotržena
+ */
+ 
 import {WebServer} from "./web_server";
 import {DevicesDAO} from "./dao";
 import {DB} from "./db";
@@ -28,7 +32,7 @@ export async function main(){
 	MyMQTTClient.connect();
 
 	DB.registerDbImpl("postgresql", PostgresGW);
-  	DB.connect();
+	DB.connect();
 
 	webServer = new WebServer("web");
 	webServer.start();

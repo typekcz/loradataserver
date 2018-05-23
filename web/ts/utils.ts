@@ -1,3 +1,7 @@
+/* MIT License
+ * Copyright (c) 2018 Lukáš Kotržena
+ */
+
 /**
  * Assembles object from query string.
  * @param data object serializable into query string
@@ -13,9 +17,9 @@ function queryString(data: Object){
  * Gets ancestor of the HTML element by specified number of levels.
  */
 function getAncestor(element: HTMLElement, levels: number): HTMLElement{
-    for (var i = 0; i < levels; i++) {
-        element = element.parentElement;
-    }
+	for (var i = 0; i < levels; i++) {
+		element = element.parentElement;
+	}
 	return element;
 }
 
@@ -68,7 +72,7 @@ function parseForm(form: HTMLFormElement, all?: boolean): any{
 				node[n];
 			}
 			if(i < splitName.length - 1)
-			 	node = node[n];
+				node = node[n];
 		}
 		if(node[n] instanceof Array){
 			node[n].push(input.value);
@@ -88,24 +92,24 @@ function parseForm(form: HTMLFormElement, all?: boolean): any{
  * @returns created element
  */
 function buildElement(name: string, attributes: {[key:string]: string}, children?: HTMLElement | string | (HTMLElement | string)[]): HTMLElement{
-    let el = document.createElement(name);
-    for(let attrName in attributes){
+	let el = document.createElement(name);
+	for(let attrName in attributes){
 		if(typeof(attributes[attrName]) !== "undefined")
-        	el.setAttribute(attrName, attributes[attrName]);
-    }
-    if(children){
-        if(!(children instanceof Array)){
-            children = [children];
-        }
-        for(let child of children){
-            if(typeof(child) == "string"){
-                el.appendChild(document.createTextNode(child));
-            } else if(child instanceof HTMLElement){
-                el.appendChild(child);
-            }
-        }
-    }
-    return el;
+			el.setAttribute(attrName, attributes[attrName]);
+	}
+	if(children){
+		if(!(children instanceof Array)){
+			children = [children];
+		}
+		for(let child of children){
+			if(typeof(child) == "string"){
+				el.appendChild(document.createTextNode(child));
+			} else if(child instanceof HTMLElement){
+				el.appendChild(child);
+			}
+		}
+	}
+	return el;
 }
 
 /**

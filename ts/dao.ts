@@ -1,3 +1,7 @@
+/* MIT License
+ * Copyright (c) 2018 Lukáš Kotržena
+ */
+
 import {DB, Column} from "./db";
 import {Auth, Permissions} from "./auth";
 import LoRaAppServerRest from "./loraappserver_rest";

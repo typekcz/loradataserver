@@ -1,3 +1,7 @@
+/* MIT License
+ * Copyright (c) 2018 Lukáš Kotržena
+ */
+
 import {DatasetsDAO, DevicesDAO, ApplicationsDAO} from "./dao";
 import * as MQTT from "mqtt";
 import * as CONF from "config";

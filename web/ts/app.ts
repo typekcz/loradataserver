@@ -1,3 +1,7 @@
+/* MIT License
+ * Copyright (c) 2018 Lukáš Kotržena
+ */
+
 interface LocationNode {
 	show?: (params: string[]) => void,
 	param?: LocationNode,
@@ -174,7 +178,7 @@ class App {
 		let params: string[] = [];
 
 		for(var i = 0; i < pathFrags.length; i++){
-	        var nodeFound = false;
+			var nodeFound = false;
 			if(locationNode.children)
 				for(let child in locationNode.children){
 					if(child == pathFrags[i]){
@@ -185,14 +189,14 @@ class App {
 				}
 			if(nodeFound)
 				continue;
-	        if(locationNode.param){
-	            locationNode = locationNode.param;
+			if(locationNode.param){
+				locationNode = locationNode.param;
 				params.push(pathFrags[i]);
-	            continue;
-	        }
-	        locationNode = null;
-	        break;
-	    }
+				continue;
+			}
+			locationNode = null;
+			break;
+		}
 		if(locationNode && locationNode.show){
 			locationNode.show(params);
 		} else {
@@ -248,8 +252,8 @@ class App {
 	}
 
 	 /**
- 	 * Gets level of permission of the current user on the specified organization.
- 	 */
+	 * Gets level of permission of the current user on the specified organization.
+	 */
 	public static async getPermissionsForOrg(orgId: number): Promise<Permissions>{
 		let profile = await DAO.getProfile();
 		if(profile.user.isAdmin)
@@ -321,26 +325,26 @@ class App {
 	 * @param event of form submit
 	 */
 	public static submitLogin(event: Event){
-        (async () => {
-            try {
-                let form: HTMLFormElement = event.target as HTMLFormElement;
-                await App.login(form.login.value, form.password.value);
+		(async () => {
+			try {
+				let form: HTMLFormElement = event.target as HTMLFormElement;
+				await App.login(form.login.value, form.password.value);
 				form.password.value = "";
-            } catch(error){
-                console.error("Error\r\n"+error);
-            }
-        })();
-        return false;
-    }
+			} catch(error){
+				console.error("Error\r\n"+error);
+			}
+		})();
+		return false;
+	}
 
 	/**
 	 * Method for submitting a logout form.
 	 */
-    public static submitLogout(){
-        this.logout();
+	public static submitLogout(){
+		this.logout();
 		this.goToState("login");
-        return false;
-    }
+		return false;
+	}
 }
 
 /// Initialization of appliaction after page is loaded.

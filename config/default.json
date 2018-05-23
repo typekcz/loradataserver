@@ -6,7 +6,7 @@
 		"https": {
 			"port": 0,
 			"key": "key.pem",
-  			"cert": "cert.pem"
+			"cert": "cert.pem"
 		}
 	},
 	"connections": {
@@ -18,7 +18,7 @@
 			}
 		},
 		"rest": {
-            "url": "https://localhost:8080/api"
+			"url": "https://localhost:8080/api"
 		},
 		"database": "postgresql://localhost:5432/lora_data_app"
 	}

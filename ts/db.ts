@@ -1,3 +1,7 @@
+/* MIT License
+ * Copyright (c) 2018 Lukáš Kotržena
+ */
+
 import * as CONF from "config";
 import * as URL from "url";
 import * as Utils from "./utils";

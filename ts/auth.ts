@@ -1,3 +1,7 @@
+/* MIT License
+ * Copyright (c) 2018 Lukáš Kotržena
+ */
+
 import * as CONF from "config";
 import LoRaAppServerRest from "./loraappserver_rest";
 import {ForbiddenError, UnauthorizedError} from "./errors";

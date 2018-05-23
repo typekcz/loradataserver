@@ -1,3 +1,7 @@
+/* MIT License
+ * Copyright (c) 2018 Lukáš Kotržena
+ */
+
 import * as HTTPS from "https";
 import * as HTTP from "http";
 import * as CONF from "config";
@@ -16,20 +20,20 @@ export default class LoRaAppServerRest {
 	 * @param headers HTTP headers
 	 */
 	public static request(method, path, data, callback: (response: HTTP.IncomingMessage) => void, headers = {}){
-	    var restUrl = URL.parse(CONF.get("connections.rest.url"));
-	    let req = HTTPS.request(
-	        {
-	            host: restUrl.hostname,
-	            port: restUrl.port,
-	            path: restUrl.pathname + path,
-	            method: method,
+		var restUrl = URL.parse(CONF.get("connections.rest.url"));
+		let req = HTTPS.request(
+			{
+				host: restUrl.hostname,
+				port: restUrl.port,
+				path: restUrl.pathname + path,
+				method: method,
 				rejectUnauthorized: false,
 				//requestCert: true,
 				agent: false,
 				headers: headers
-	        },
-	        callback
-	    );
+			},
+			callback
+		);
 		if(data)
 			req.write(data);
 		req.end();
@@ -68,17 +72,17 @@ export default class LoRaAppServerRest {
 		try {
 			let body = await WebServer.getRequestBody(request, false);
 			LoRaAppServerRest.request(request.method, URL.parse(request.url).path.substr(4), body,
-		        function(res) {
-		            response.writeHead(res.statusCode, res.headers);
-		            res.setEncoding("utf8");
-		            res.on("data", (chunk) => {
-		                response.write(chunk);
-		            });
+				function(res) {
+					response.writeHead(res.statusCode, res.headers);
+					res.setEncoding("utf8");
+					res.on("data", (chunk) => {
+						response.write(chunk);
+					});
 					res.on("end", () => {
 						response.end();
 					})
-		        }, request.headers
-		    );
+				}, request.headers
+			);
 		} catch(error){
 			console.log(error);
 			ApiNode.error(request, response, error);
@@ -97,24 +101,24 @@ export default class LoRaAppServerRest {
 		}
 
 		public get(request: HTTP.IncomingMessage, response: HTTP.ServerResponse, params: string[]){
-	        LoRaAppServerRest.apiHttpRequest(request, response);
-	    }
+			LoRaAppServerRest.apiHttpRequest(request, response);
+		}
 
-	    public post(request: HTTP.IncomingMessage, response: HTTP.ServerResponse, params: string[]){
-	        LoRaAppServerRest.apiHttpRequest(request, response);
-	    }
+		public post(request: HTTP.IncomingMessage, response: HTTP.ServerResponse, params: string[]){
+			LoRaAppServerRest.apiHttpRequest(request, response);
+		}
 
-	    public put(request: HTTP.IncomingMessage, response: HTTP.ServerResponse, params: string[]){
-	        LoRaAppServerRest.apiHttpRequest(request, response);
-	    }
+		public put(request: HTTP.IncomingMessage, response: HTTP.ServerResponse, params: string[]){
+			LoRaAppServerRest.apiHttpRequest(request, response);
+		}
 
-	    public patch(request: HTTP.IncomingMessage, response: HTTP.ServerResponse, params: string[]){
-	        LoRaAppServerRest.apiHttpRequest(request, response);
-	    }
+		public patch(request: HTTP.IncomingMessage, response: HTTP.ServerResponse, params: string[]){
+			LoRaAppServerRest.apiHttpRequest(request, response);
+		}
 
-	    public delete(request: HTTP.IncomingMessage, response: HTTP.ServerResponse, params: string[]){
-	        LoRaAppServerRest.apiHttpRequest(request, response);
-	    }
+		public delete(request: HTTP.IncomingMessage, response: HTTP.ServerResponse, params: string[]){
+			LoRaAppServerRest.apiHttpRequest(request, response);
+		}
 	}
 
 	public static readonly apiNodeInstance = new LoRaAppServerRest.ApiNode();

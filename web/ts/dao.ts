@@ -1,23 +1,27 @@
+/* MIT License
+ * Copyright (c) 2018 Lukáš Kotržena
+ */
+
 /// Class that loads entities from the REST API and stores them in caches.
 class DAO {
-    public static cache = {
+	public static cache = {
 		organizations: new Map<number, any>(),
 		applications: new Map<number, any>(),
 		devices: new Map<string, any>(),
 		data: new Map<number, any>(),
-        profile: null
+		profile: null
 	};
 
-    /**
+	/**
 	 * Loads entity or entities from the REST API.
 	 * @param url path of GET request
-     * @param collection where entities should be stored
-     * @param getKeyF a function for obtaining a unique entity key
-     * @param initEntity a function for initializing entity object
-     * @param args other arrays into which the entities will be pushed or functions that will be call with entity
+	 * @param collection where entities should be stored
+	 * @param getKeyF a function for obtaining a unique entity key
+	 * @param initEntity a function for initializing entity object
+	 * @param args other arrays into which the entities will be pushed or functions that will be call with entity
 	 * @returns array of entities or single entity
 	 */
-    public static async fetchToCache(url: string, collection: Map<any, any>, getKeyF: Function, initEntity?: Function, ...args: (Array<any>|Function)[]){
+	public static async fetchToCache(url: string, collection: Map<any, any>, getKeyF: Function, initEntity?: Function, ...args: (Array<any>|Function)[]){
 		let response = await fetch(url, {
 			method: "GET",
 			headers: {
@@ -51,16 +55,16 @@ class DAO {
 			for(let ai = 0; ai < args.length; ai++){
 				let array = args[ai];
 				if(array instanceof Array && array.indexOf(cachedEntity) < 0){
-                    let alreadyExists = false;
-                    for(let arrayItem of array){
-                        if(getKeyF(arrayItem) == key){
-                            alreadyExists = true;
-                            console.log("alreadyExists");
-                            break;
-                        }
-                    }
-                    if(!alreadyExists)
-				        array.push(cachedEntity);
+					let alreadyExists = false;
+					for(let arrayItem of array){
+						if(getKeyF(arrayItem) == key){
+							alreadyExists = true;
+							console.log("alreadyExists");
+							break;
+						}
+					}
+					if(!alreadyExists)
+						array.push(cachedEntity);
 				} else if(array instanceof Function){
 					array(cachedEntity);
 				}
@@ -74,15 +78,15 @@ class DAO {
 		}
 	}
 
-    /**
+	/**
 	 * Returns loaded or stored user profile.
 	 */
-    public static async getProfile(){
-        const maxAge = 10*60*1000;
-        if(this.cache.profile && (Date.now() - this.cache.profile.updatedTime) < maxAge){
-            return this.cache.profile;
-        }
-        let profile = (await (await fetch(
+	public static async getProfile(){
+		const maxAge = 10*60*1000;
+		if(this.cache.profile && (Date.now() - this.cache.profile.updatedTime) < maxAge){
+			return this.cache.profile;
+		}
+		let profile = (await (await fetch(
 			config.rest + "/internal/profile", {
 				method: "GET",
 				headers: {
@@ -90,15 +94,15 @@ class DAO {
 				}
 			}
 		)).json());
-        profile.updatedTime = Date.now();
-        this.cache.profile = profile;
-        return profile;
-    }
+		profile.updatedTime = Date.now();
+		this.cache.profile = profile;
+		return profile;
+	}
 
-    /**
+	/**
 	 * Returns loaded or stored organizations.
 	 */
-    public static async getOrganizationList(): Promise<any[]>{
+	public static async getOrganizationList(): Promise<any[]>{
 		let totalCount = (await (await fetch(
 			config.rest + "/organizations", {
 				method: "GET",
@@ -116,19 +120,19 @@ class DAO {
 		);
 	}
 
-    /**
+	/**
 	 * Returns loaded or stored organization.
 	 */
-    public static async getOrganization(orgId: number){
-        return await this.fetchToCache(
-            config.rest + "/organizations/" + encodeURIComponent(orgId.toString()),
-            this.cache.organizations,
+	public static async getOrganization(orgId: number){
+		return await this.fetchToCache(
+			config.rest + "/organizations/" + encodeURIComponent(orgId.toString()),
+			this.cache.organizations,
 			(e) => parseInt(e.id),
 			(e) => e.applications = []
-        );
-    }
+		);
+	}
 
-    /**
+	/**
 	 * Returns loaded or stored organization gateways.
 	 */
 	public static async getGateways(orgId: number): Promise<any[]> {
@@ -153,7 +157,7 @@ class DAO {
 		)).json()).result;
 	}
 
-    /**
+	/**
 	 * Returns loaded gateway.
 	 */
 	public static async getGateway(mac: string){
@@ -168,26 +172,26 @@ class DAO {
 		)).json());
 	}
 
-    /**
+	/**
 	 * Returns loaded gateway statistics.
 	 */
-    public static async getGatewayStats(mac: string, start: Date, end: Date){
-        return await (await fetch(
-            config.rest + "/gateways/" + encodeURIComponent(mac) + "/stats" +
-            "?interval=day" +
-            "&startTimestamp=" + encodeURIComponent(start.toISOString()) +
-            "&endTimestamp=" + encodeURIComponent(end.toISOString()), {
+	public static async getGatewayStats(mac: string, start: Date, end: Date){
+		return await (await fetch(
+			config.rest + "/gateways/" + encodeURIComponent(mac) + "/stats" +
+			"?interval=day" +
+			"&startTimestamp=" + encodeURIComponent(start.toISOString()) +
+			"&endTimestamp=" + encodeURIComponent(end.toISOString()), {
 				method: "GET",
 				headers: {
 					"grpc-metadata-authorization": await App.getJWT()
 				}
 			}
-        )).json();
-    }
+		)).json();
+	}
 
-    /**
+	/**
 	 * Returns loaded or stored organization applications.
-     * @param getNext retrieves next part if all applications in the previous call were not loaded
+	 * @param getNext retrieves next part if all applications in the previous call were not loaded
 	 */
 	public static async getApplicationList(orgId: number, getNext = false): Promise<Application[]>{
 		let limit = 50;
@@ -232,13 +236,13 @@ class DAO {
 
 	/**
 	 * Ask if all applications have not been loaded.
-     * If they were not, more can be loaded by calling getApplicationsList with true value in the getNext parameter.
+	 * If they were not, more can be loaded by calling getApplicationsList with true value in the getNext parameter.
 	 */
 	public static hasMoreApplications(orgId: number): boolean{
 		return !(this.cache.organizations.get(orgId).applications["totalCount"] <= this.cache.applications.size);
 	}
 
-    /**
+	/**
 	 * Returns loaded or stored application.
 	 */
 	public static getApplication(appId: number): Promise<Application> {
@@ -265,9 +269,9 @@ class DAO {
 		);
 	}
 
-    /**
+	/**
 	 * Returns loaded or stored application devices.
-     * @param getNext retrieves next part if all devices in the previous call were not loaded
+	 * @param getNext retrieves next part if all devices in the previous call were not loaded
 	 */
 	public static async getDeviceList(appId: number, getNext = false): Promise<Device[]> {
 		let limit = 50;
@@ -299,16 +303,16 @@ class DAO {
 		return app.devices;
 	}
 
-    /**
+	/**
 	 * Ask if all application devices have not been loaded.
-     * If they were not, more can be loaded by calling getDeviceList with true value in the getNext parameter.
+	 * If they were not, more can be loaded by calling getDeviceList with true value in the getNext parameter.
 	 */
 	public static hasMoreDevices(appId: number): boolean{
 		let app = this.cache.applications.get(appId);
 		return !(app.devices["totalCount"] <= app.devices.length);
 	}
 
-    /**
+	/**
 	 * Returns loaded or stored devices.
 	 */
 	public static getDevice(devEUI: string): Promise<Device> {
@@ -325,24 +329,24 @@ class DAO {
 		);
 	}
 
-    /**
+	/**
 	 * Returns loaded device statistics.
 	 */
-    public static async getDeviceStats(devEUI: string, from?: Date, to?: Date){
-        let response = await fetch(
-            config.rest + "/devices/" + encodeURIComponent(devEUI) + "/stats?" +
-            (from? "from=" + encodeURIComponent(from.toISOString()) : "") + "&" +
-            (to? "from=" + encodeURIComponent(to.toISOString()) : ""), {
-                method: "GET",
-                headers: {
-                    "grpc-metadata-authorization": await App.getJWT()
-                }
-            }
-        );
-        return (await response.json()).result;
-    }
+	public static async getDeviceStats(devEUI: string, from?: Date, to?: Date){
+		let response = await fetch(
+			config.rest + "/devices/" + encodeURIComponent(devEUI) + "/stats?" +
+			(from? "from=" + encodeURIComponent(from.toISOString()) : "") + "&" +
+			(to? "from=" + encodeURIComponent(to.toISOString()) : ""), {
+				method: "GET",
+				headers: {
+					"grpc-metadata-authorization": await App.getJWT()
+				}
+			}
+		);
+		return (await response.json()).result;
+	}
 
-    /**
+	/**
 	 * Returns loaded application datasets.
 	 */
 	public static async getDatasets(appId: number){
@@ -358,7 +362,7 @@ class DAO {
 		);
 	}
 
-    /**
+	/**
 	 * Returns loaded dataset values.
 	 */
 	public static async getDatasetValues(appId: number, dataset: string): Promise<any>{
@@ -372,7 +376,7 @@ class DAO {
 		return (await response.json()).result;
 	}
 
-    /**
+	/**
 	 * Returns loaded or stored application views.
 	 */
 	public static async getViews(appId: number): Promise<View[]>{
@@ -399,7 +403,7 @@ class DAO {
 		}
 	}
 
-    /**
+	/**
 	 * Returns loaded or stored view.
 	 */
 	public static async getView(appId: number, view: string): Promise<View> {
